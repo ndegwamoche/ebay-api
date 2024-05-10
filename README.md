@@ -15,8 +15,7 @@
 <li>You may need to install dependencies if any. This project currently does not have any external dependencies.</li>
 
 <h3>Usage</h3>
-<li>Ensure that you have obtained API credentials from eBay Developer Program.</li>
-<a href='https://gist.github.com/rickapps/1be821cd515f8cc946f292b715f893db'>How to generate eBay Refresh Tokens</a>
+<li>Ensure that you have obtained API credentials from eBay Developer Program. Here are the steps <a href='https://gist.github.com/rickapps/1be821cd515f8cc946f292b715f893db'>How to generate eBay Refresh Tokens</a></li>
 <li>Configure the client_id, secret, and other necessary parameters in the eBay.php file.</li>
 <li>Run the PHP script from your command line or integrate it with your PHP application.</li>
 <li>You can use the provided methods to interact with the eBay API, such as add_eBay_item(), update_eBay_item(), and delete_ebay_listing().</li>
