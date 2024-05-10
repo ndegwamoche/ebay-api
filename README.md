@@ -5,7 +5,7 @@ Overview
 This PHP script provides functionalities to interact with the eBay API for managing listings. It allows users to add new listings, update existing ones, and delete listings from the eBay platform.
 
 Features
-Add a new eBay listing
+<li>Add a new eBay listing</li>
 Update an existing eBay listing
 Delete an eBay listing
 
