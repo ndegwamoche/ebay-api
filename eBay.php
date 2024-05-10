@@ -386,4 +386,69 @@ class eBay
         $this->error = true;
         return $listing_status;
     }
+
+    /**
+     * Deletes an eBay listing.
+     *
+     * @param string $external_ad_id The ID of the eBay listing to be deleted.
+     * 
+     * @return void
+     */
+    public function delete_ebay_listing($external_ad_id)
+    {
+        // Checks if the session timeout is expired
+        if ($this->session_timeout <= 0) {
+            // If expired, obtains a new user access eBay token
+            $this->get_user_access_eBay_token();
+        } else {
+            // If not expired, uses the existing eBay token from the session
+            $this->eBay_token = $_SESSION["access_token"];
+        }
+
+        // Constructs the XML request body to delete the eBay listing
+        $xmlbody = "<?xml version='1.0' encoding='utf-8'?>";
+        $xmlbody .= "<EndFixedPriceItemRequest xmlns='urn:ebay:apis:eBLBaseComponents'>";
+        $xmlbody .= "<ItemID>{$external_ad_id}</ItemID>";
+        $xmlbody .= "<EndingReason>NotAvailable</EndingReason>";
+        $xmlbody .= "<RequesterCredentials>";
+        $xmlbody .= "<eBayAuthToken>{$this->eBay_token}</eBayAuthToken>";
+        $xmlbody .= "</RequesterCredentials>";
+        $xmlbody .= "</EndFixedPriceItemRequest>";
+
+        // Sets the headers for the cURL request
+        $headers = array(
+            'X-EBAY-API-COMPATIBILITY-LEVEL: 967',
+            'X-EBAY-API-SITEID: 146',
+            "X-EBAY-API-CALL-NAME: EndFixedPriceItem",
+            'X-EBAY-API-IAF-TOKEN: ' . $this->eBay_token
+        );
+
+        // Sets the eBay API endpoint
+        $endpoint = "https://api.ebay.com/ws/api.dll";
+
+        // Initializes a cURL session
+        $connection = curl_init();
+        curl_setopt($connection, CURLOPT_URL, $endpoint);
+        curl_setopt($connection, CURLOPT_SSL_VERIFYPEER, 0);
+        curl_setopt($connection, CURLOPT_SSL_VERIFYHOST, 0);
+        curl_setopt($connection, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($connection, CURLOPT_POST, 1);
+        curl_setopt($connection, CURLOPT_POSTFIELDS, $xmlbody);
+        curl_setopt($connection, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($connection, CURLOPT_TIMEOUT, 5);
+
+        // Executes the cURL request and stores the response
+        $response = curl_exec($connection);
+
+        // Closes the cURL session
+        curl_close($connection);
+
+        // Parses the XML response into an associative array
+        $array_data = $this->simplexml_load_string($response);
+
+        $array_data = json_encode($array_data);
+
+        // Uncomment the below line to display the parsed array response
+        // print_r($array_data);
+    }
 }
