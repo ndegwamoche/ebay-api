@@ -1,4 +1,4 @@
-eBay API Integration with PHP
+<h2>eBay API Integration with PHP</h2>
 This repository contains PHP code for integrating with the eBay API to perform various tasks such as adding, updating, and deleting listings.
 
 Overview
